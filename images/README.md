@@ -16,6 +16,7 @@ show normally. PNG preferred (sharp text), 16:9 or 4:3 aspect.
 | `01-license-dialog.png`         | The License activation dialog on first launch. Show both Step 1 (Device Key) and Step 2 (License Key).   |
 | `02-main-window.png`            | Aura's main window — titlebar + caption pane + action bar + AI tab (ChatGPT signed in is ideal).         |
 | `04-manage-modes.png`           | Manage Modes dialog with at least 2 resumes uploaded, one marked Active. Sidebar shows multiple modes.   |
+| `06-ai-picker.png`              | Settings → AI &amp; CAPTIONS. AI provider dropdown OPEN so all 5 options (ChatGPT/Claude/Gemini/Perplexity/Grok) are visible. |
 | `14-hotkeys-settings.png`       | Settings dialog scrolled to the HOTKEYS section — every row visible with their Alt+letter bindings.       |
 | `15-tray-menu.png`              | Right-click tray menu expanded with the Profile sub-menu hovered and at least one mode showing resumes. |
 
