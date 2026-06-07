@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aura — User Guide</title>
+<style>
+  :root {
+    --bg-root: #0A0A12;
+    --bg-panel: #13131C;
+    --bg-surface: #1A1A26;
+    --bg-hover: #252535;
+    --border: #2A2A3A;
+    --accent: #8B6DFF;
+    --accent-dim: #6B4DDF;
+    --text-primary: #F0F0F8;
+    --text-second: #B8B8D0;
+    --text-dim: #7878A0;
+    --success: #7CFFAA;
+    --warn: #FFD56B;
+    --danger: #FF8888;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg-root);
+    color: var(--text-primary);
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    line-height: 1.65;
+    font-size: 15px;
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
+  }
+  /* Sidebar TOC */
+  aside.toc {
+    background: var(--bg-panel);
+    border-right: 1px solid var(--border);
+    padding: 28px 20px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  aside.toc::-webkit-scrollbar { width: 6px; }
+  aside.toc::-webkit-scrollbar-thumb { background: #3A3A4E; border-radius: 3px; }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .brand .logo {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-dim));
+    display: grid; place-items: center;
+    color: #fff; font-weight: 700; font-size: 16px;
+  }
+  .brand .name { font-weight: 700; font-size: 18px; letter-spacing: 0.3px; }
+  .brand .sub { color: var(--text-dim); font-size: 11px; }
+  .toc-section {
+    color: var(--text-dim);
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin: 18px 0 6px;
+  }
+  .toc a {
+    display: block;
+    padding: 6px 10px;
+    color: var(--text-second);
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 13.5px;
+    transition: all 0.12s ease;
+  }
+  .toc a:hover { background: var(--bg-hover); color: var(--text-primary); }
+  .toc a.active { background: rgba(139, 109, 255, 0.15); color: var(--accent); }
+
+  /* Signature features — Stealth + Pin cursor are what makes Aura
+     different from any other interview tool. Both get a left accent
+     rail in the TOC; Pin cursor (the headline USP) additionally
+     gets a soft purple glow + a "SIGNATURE" badge so first-time
+     users immediately know that's the killer feature. */
+  .toc a.feature {
+    position: relative;
+    padding-left: 14px;
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  .toc a.feature::before {
+    content: "";
+    position: absolute;
+    left: 4px; top: 50%;
+    transform: translateY(-50%);
+    width: 3px; height: 18px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+  .toc a.signature {
+    background: linear-gradient(90deg, rgba(139, 109, 255, 0.12), rgba(139, 109, 255, 0));
+    color: var(--text-primary);
+    font-weight: 600;
+    box-shadow: inset 0 0 0 1px rgba(139, 109, 255, 0.25);
+    padding-right: 70px;
+  }
+  .toc a.signature::after {
+    content: "SIGNATURE";
+    position: absolute;
+    right: 8px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    color: var(--accent);
+    background: rgba(139, 109, 255, 0.18);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .toc a.signature:hover {
+    background: linear-gradient(90deg, rgba(139, 109, 255, 0.22), rgba(139, 109, 255, 0.05));
+  }
+
+  /* Main */
+  main {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 60px 56px 120px;
+  }
+  h1 {
+    font-size: 38px; font-weight: 800;
+    letter-spacing: -0.3px;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #fff, var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .lede {
+    font-size: 17px;
+    color: var(--text-second);
+    margin-bottom: 36px;
+    max-width: 600px;
+  }
+  h2 {
+    font-size: 26px; font-weight: 700;
+    margin: 56px 0 14px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+    padding-top: 28px;
+  }
+  h2:first-of-type { border-top: none; padding-top: 0; margin-top: 36px; }
+  h3 {
+    font-size: 17px; font-weight: 600;
+    margin: 28px 0 8px;
+    color: var(--text-primary);
+  }
+  p { margin-bottom: 12px; color: var(--text-second); }
+  p strong, li strong { color: var(--text-primary); font-weight: 600; }
+  ul, ol { padding-left: 22px; margin-bottom: 14px; color: var(--text-second); }
+  li { margin-bottom: 6px; }
+  code {
+    font-family: 'Cascadia Mono', 'Consolas', 'Menlo', monospace;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    color: var(--accent);
+    padding: 1px 7px;
+    border-radius: 5px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  kbd {
+    font-family: 'Cascadia Mono', 'Consolas', monospace;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-bottom-width: 2px;
+    color: var(--accent);
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-size: 12.5px;
+    font-weight: 600;
+    white-space: nowrap;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.4);
+  }
+  /* Callouts */
+  .callout {
+    border-left: 3px solid var(--accent);
+    background: rgba(139, 109, 255, 0.06);
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin: 18px 0;
+    font-size: 14px;
+    color: var(--text-second);
+  }
+  .callout.warn { border-color: var(--warn); background: rgba(255, 213, 107, 0.06); }
+  .callout.danger { border-color: var(--danger); background: rgba(255, 136, 136, 0.06); }
+  .callout strong { display: block; color: var(--text-primary); margin-bottom: 4px; font-size: 13px; letter-spacing: 0.3px; }
+  /* Step list */
+  ol.steps { counter-reset: step; list-style: none; padding-left: 0; }
+  ol.steps li {
+    counter-increment: step;
+    position: relative;
+    padding: 14px 18px 14px 56px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+  ol.steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 16px; top: 14px;
+    width: 28px; height: 28px;
+    background: var(--accent);
+    color: #fff; font-weight: 700;
+    border-radius: 50%;
+    display: grid; place-items: center;
+    font-size: 13px;
+  }
+  /* Hotkey table */
+  table.hotkeys {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 14px 0;
+  }
+  table.hotkeys th {
+    background: var(--bg-surface);
+    color: var(--text-dim);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  table.hotkeys td {
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--text-second);
+  }
+  table.hotkeys tr:last-child td { border-bottom: none; }
+  table.hotkeys tr:hover { background: var(--bg-hover); }
+  table.hotkeys td.key { text-align: right; }
+  /* Feature card grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+  }
+  .card .icon {
+    width: 32px; height: 32px;
+    background: rgba(139, 109, 255, 0.15);
+    color: var(--accent);
+    border-radius: 8px;
+    display: grid; place-items: center;
+    font-weight: 700; font-size: 15px;
+    margin-bottom: 10px;
+  }
+  .card h4 { color: var(--text-primary); font-size: 14.5px; margin-bottom: 4px; font-weight: 600; }
+  .card p { font-size: 13px; color: var(--text-dim); margin: 0; line-height: 1.55; }
+  /* Section anchor offset for fixed header */
+  section { scroll-margin-top: 24px; }
+  hr.soft { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
+  /* Download CTA — sits just under the lede. Gradient panel with
+     a big primary button + version metadata. Replace the
+     YOUR_USERNAME placeholder in the href with your actual
+     GitHub username. The "/releases/latest/" path is a GitHub
+     special — it always serves whatever the most recent release
+     asset is, so the page doesn't need re-editing on each ship. -->
+  .download-cta {
+    margin: 0 0 48px;
+    padding: 28px 32px;
+    background: linear-gradient(135deg, rgba(139, 109, 255, 0.18), rgba(139, 109, 255, 0.04));
+    border: 1px solid rgba(139, 109, 255, 0.35);
+    border-radius: 14px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 24px;
+    box-shadow: 0 8px 32px rgba(139, 109, 255, 0.08);
+  }
+  .download-cta .info { min-width: 0; }
+  .download-cta .version {
+    display: inline-block;
+    background: rgba(139, 109, 255, 0.25);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    padding: 3px 9px;
+    border-radius: 5px;
+    margin-bottom: 8px;
+  }
+  .download-cta h3 {
+    margin: 0 0 4px;
+    font-size: 22px;
+    color: var(--text-primary);
+    font-weight: 700;
+    letter-spacing: -0.2px;
+  }
+  .download-cta .meta {
+    color: var(--text-second);
+    font-size: 13.5px;
+    margin: 0;
+  }
+  .download-cta .meta strong {
+    color: var(--text-primary);
+  }
+  .download-cta .btn-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
+  }
+  .download-cta .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 26px;
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.15s ease;
+    box-shadow: 0 4px 18px rgba(139, 109, 255, 0.35);
+  }
+  .download-cta .btn:hover {
+    background: #9C82FF;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 22px rgba(139, 109, 255, 0.5);
+  }
+  .download-cta .btn .arrow { font-size: 16px; line-height: 1; }
+  .download-cta .footnote {
+    color: var(--text-dim);
+    font-size: 11.5px;
+  }
+  @media (max-width: 700px) {
+    .download-cta {
+      grid-template-columns: 1fr;
+      padding: 22px;
+    }
+    .download-cta .btn-row { align-items: stretch; }
+    .download-cta .btn { justify-content: center; }
+  }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    aside.toc { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+    main { padding: 36px 24px 80px; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- ─── Sidebar TOC ─────────────────────────────────── -->
+  <aside class="toc">
+    <div class="brand">
+      <div class="logo">A</div>
+      <div>
+        <div class="name">Aura</div>
+        <div class="sub">User Guide</div>
+      </div>
+    </div>
+
+    <div class="toc-section">Get started</div>
+    <a href="#install">1. Install &amp; activate</a>
+    <a href="#first-launch">2. First launch</a>
+
+    <div class="toc-section">Set up for an interview</div>
+    <a href="#mode">3. Create a profile (mode)</a>
+    <a href="#resume">4. Upload your resume(s)</a>
+    <a href="#prompt">5. Customise the prompt</a>
+    <a href="#ai-pick">6. Pick your AI tab</a>
+
+    <div class="toc-section">During the interview</div>
+    <a href="#start-meeting">7. Start meeting</a>
+    <a href="#answer">8. Get an Answer</a>
+    <a href="#snap-ocr">9. Snap / OCR</a>
+    <a href="#project">10. Load project for context</a>
+
+    <div class="toc-section">Stay hidden</div>
+    <a href="#stealth" class="feature">11. Stealth mode</a>
+    <a href="#pin-cursor" class="signature">12. Pin cursor</a>
+    <a href="#opacity">13. Opacity / appearance</a>
+
+    <div class="toc-section">Reference</div>
+    <a href="#hotkeys" class="feature">14. Hotkeys</a>
+    <a href="#tray" class="feature">15. Tray menu</a>
+    <a href="#privacy">16. Privacy &amp; license</a>
+    <a href="#troubleshoot">17. Troubleshooting</a>
+  </aside>
+
+  <!-- ─── Main content ────────────────────────────────── -->
+  <main>
+    <h1>Aura User Guide</h1>
+    <p class="lede">A complete walkthrough — from installation to live-interview workflow. Everything you need to use Aura confidently in front of a real interviewer.</p>
+
+    <!-- ─── Download CTA ──────────────────────────────────
+         "/releases/latest/download/" is a GitHub special URL that
+         always serves the asset from the newest release, so this
+         button never has to be re-edited when a new version ships.
+         The repo name (aura-guide) doubles as the docs host AND
+         the release-asset host — uploading a new AuraSetup-N.N.N
+         .exe via Releases instantly makes it the live download. -->
+    <div class="download-cta">
+      <div class="info">
+        <span class="version">v1.1.0</span>
+        <h3>Get Aura for Windows</h3>
+        <p class="meta"><strong>Windows 10/11</strong> · 75 MB · one-click installer · hardware-bound license</p>
+      </div>
+      <div class="btn-row">
+        <a class="btn" href="https://github.com/corestack-cs/aura-guide/releases/latest/download/AuraSetup-1.1.0.exe">
+          <span class="arrow">⬇</span>
+          <span>Download AuraSetup-1.1.0.exe</span>
+        </a>
+        <div class="footnote">WebView2 runtime included · No telemetry</div>
+      </div>
+    </div>
+
+    <!-- 1. Install & activate -->
+    <section id="install">
+      <h2>1. Install &amp; activate</h2>
+      <ol class="steps">
+        <li>
+          <strong>Run the installer.</strong>
+          Double-click <code>AuraSetup-1.1.0.exe</code>. The wizard auto-closes any running Aura instance, copies files to <code>C:\Program Files\Aura\</code>, and registers Start Menu / optional desktop shortcuts.
+        </li>
+        <li>
+          <strong>WebView2 runtime check.</strong>
+          The installer verifies Microsoft Edge WebView2 Runtime is present (it usually ships with Windows 10/11). If it's missing, the installer opens the official download page.
+        </li>
+        <li>
+          <strong>Launch Aura.</strong>
+          The first window you'll see is the License dialog. Paste your activation key and click <strong>Activate</strong>.
+        </li>
+        <li>
+          <strong>Save the backup .lic file.</strong>
+          Aura prompts you to save a backup of your license file. Keep it somewhere safe — you'll need it if you reinstall Windows or move to a new machine.
+        </li>
+      </ol>
+      <div class="callout warn">
+        <strong>Hardware-bound license</strong>
+        Your key is tied to this PC's fingerprint (CPU + disk + BIOS). Re-activating on a different machine consumes a new activation slot. Keep the backup <code>.lic</code> file — re-installing on the SAME machine reuses it automatically.
+      </div>
+    </section>
+
+    <!-- 2. First launch -->
+    <section id="first-launch">
+      <h2>2. First launch</h2>
+      <p>After activation Aura opens its main window centred on your primary monitor. You'll see four areas:</p>
+      <div class="grid">
+        <div class="card">
+          <div class="icon">⬜</div>
+          <h4>Titlebar</h4>
+          <p>Opacity slider, background colour, stealth eye, pin cursor, mode chip, License, Settings, Close.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🎤</div>
+          <h4>Caption pane</h4>
+          <p>Live captions from your meeting audio appear here.</p>
+        </div>
+        <div class="card">
+          <div class="icon">▶</div>
+          <h4>Action bar</h4>
+          <p>Start meeting · Project · Snap · OCR · Pin cursor · Record · Answer.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🤖</div>
+          <h4>AI tab</h4>
+          <p>WebView2 hosting ChatGPT / Claude / Gemini / Perplexity / Grok.</p>
+        </div>
+      </div>
+      <div class="callout">
+        <strong>Stealth is on by default</strong>
+        Aura's window is excluded from Zoom / Teams / Meet / OBS capture out of the box. Toggle via the eye icon in the titlebar or <kbd>Alt</kbd>+<kbd>E</kbd>.
+      </div>
+    </section>
+
+    <!-- 3. Mode -->
+    <section id="mode">
+      <h2>3. Create a profile (mode)</h2>
+      <p>A <strong>mode</strong> is one interview preset — name, real-time prompt, notes template, and any number of resumes. You'll probably want one mode per company or per role family.</p>
+      <ol class="steps">
+        <li>Click the profile chip in the titlebar (it says <code>Default ▾</code> or your current active mode), then choose <strong>Manage Modes…</strong></li>
+        <li>Click <strong>+ New Mode</strong> in the sidebar. Give it a clear name like "Senior Backend at Acme".</li>
+        <li>The <strong>Real-time prompt</strong> textbox is pre-filled with a starter template. Edit the role, company name, and focus areas to match this specific interview.</li>
+        <li>Optional: fill in <strong>Notes template</strong> with extra context (recent news about the company, the interviewer's LinkedIn, etc.).</li>
+        <li>Click <strong>Set Active</strong> to make this the profile the next meeting will use. Click <strong>Save</strong> to persist.</li>
+      </ol>
+    </section>
+
+    <!-- 4. Resumes -->
+    <section id="resume">
+      <h2>4. Upload your resume(s)</h2>
+      <p>Aura supports <strong>multiple resumes per mode</strong> — useful when you have stack-specific versions (e.g. one MERN-focused, one ASP.NET-focused). Only the resume you mark <em>Active</em> is sent to the AI when you start the meeting.</p>
+      <ol class="steps">
+        <li>Inside the Manage Modes dialog, click <strong>+ Add resume</strong> in the Resumes section.</li>
+        <li>Pick a PDF. Aura extracts the text and shows a card with the filename and character count.</li>
+        <li>Click any row to mark it <strong>Active</strong> — the active card gets an accent left rail, purple tint, and a small <em>Active</em> badge on the right.</li>
+        <li>Add as many resumes as you want; click the ✕ on a row to remove it.</li>
+      </ol>
+      <div class="callout">
+        <strong>Pro tip — quick-switch from the tray</strong>
+        Right-click Aura's tray icon → <em>Profile</em>. Modes with multiple resumes have a submenu so you can pick the exact resume without opening Manage Modes.
+      </div>
+    </section>
+
+    <!-- 5. Prompt -->
+    <section id="prompt">
+      <h2>5. Customise the prompt</h2>
+      <p>The <strong>Real-time prompt</strong> goes to the AI <em>once</em> at the start of each meeting (alongside the active resume and notes). Use it to tell the AI exactly how to behave.</p>
+      <p>The starter template covers role context and answering style. Edit it — the more specific you are, the better the answers:</p>
+      <ul>
+        <li>Name the <strong>exact role title</strong> the interview is for.</li>
+        <li>List <strong>3–4 focus technologies</strong> the interviewer is likely to drill on.</li>
+        <li>Tell the AI which examples from your resume to lead with.</li>
+        <li>Set the <strong>tone</strong> (concise, story-driven, etc.).</li>
+      </ul>
+      <p>Click <strong>Reset to template</strong> any time to drop back to the starter text and start over.</p>
+    </section>
+
+    <!-- 6. AI pick -->
+    <section id="ai-pick">
+      <h2>6. Pick your AI tab</h2>
+      <p>Open <strong>Settings → AI &amp; CAPTIONS</strong>. Five services are pre-wired:</p>
+      <ul>
+        <li><strong>ChatGPT</strong> — best general-purpose, fastest text injection.</li>
+        <li><strong>Claude</strong> — strongest reasoning on long context; good for code review questions.</li>
+        <li><strong>Gemini</strong> — Google account login works through Aura's Edge user-agent.</li>
+        <li><strong>Perplexity</strong> — adds web-search citations to answers.</li>
+        <li><strong>Grok</strong> — alternative.</li>
+      </ul>
+      <p>Whichever you pick, sign in inside the WebView2 tab once. The session persists between Aura restarts.</p>
+      <div class="callout warn">
+        <strong>Sign in BEFORE the interview</strong>
+        OAuth popups during a live meeting can be jarring. Sign in once during setup so the AI tab is ready when the interview starts.
+      </div>
+    </section>
+
+    <!-- 7. Start meeting -->
+    <section id="start-meeting">
+      <h2>7. Start meeting</h2>
+      <p>Click the big <strong>Start meeting</strong> button in the action bar (or just toggle the active profile from the tray). This:</p>
+      <ol>
+        <li>Opens a fresh AI chat on the active service.</li>
+        <li>Injects your mode payload — the real-time prompt, notes template, and active resume.</li>
+        <li>Primes the answer-style rules (whisper mode by default — interview-style first-person replies, 80-word cap).</li>
+        <li>Resets the caption deduplication so the next Answer click sees only what's said from now on.</li>
+      </ol>
+      <p>The button flips to <strong>Stop meeting</strong>. Click it any time to end the session — the captions clear and the AI tab stays where it is.</p>
+    </section>
+
+    <!-- 8. Answer -->
+    <section id="answer">
+      <h2>8. Get an Answer</h2>
+      <p>The <strong>Answer</strong> button (or <kbd>Alt</kbd>+<kbd>A</kbd>) takes whatever the interviewer just asked and pushes it to the AI for you. Priority order:</p>
+      <ol>
+        <li>Text you've <em>selected</em> in the caption pane (drag to highlight specific lines you want answered).</li>
+        <li>Caption text that arrived <em>since the last Answer click</em> (rolling tail).</li>
+        <li>The most recent OCR text result (fallback).</li>
+      </ol>
+      <p>The reply streams back into the AI tab. Read it off the right pane while you talk.</p>
+      <div class="callout">
+        <strong>Faster than a click</strong>
+        Once you're comfortable, leave Aura behind another window and press <kbd>Alt</kbd>+<kbd>A</kbd> by feel. The hotkey works system-wide regardless of focus.
+      </div>
+    </section>
+
+    <!-- 9. Snap / OCR -->
+    <section id="snap-ocr">
+      <h2>9. Snap / OCR</h2>
+      <p>When the interviewer shares a screenshot — code on a whiteboard app, a diagram, a stack trace — capture it without alt-tabbing:</p>
+      <h3>Snap (<kbd>Alt</kbd>+<kbd>S</kbd>)</h3>
+      <p>Drag a rectangle on screen. Aura crops it and pastes the image into your AI tab as a chat attachment. Use this for diagrams, UI mocks, or any visual content the AI needs to <em>see</em>.</p>
+      <h3>OCR (<kbd>Alt</kbd>+<kbd>O</kbd>)</h3>
+      <p>Same drag-a-rectangle UI, but Aura runs Windows OCR on the selection and sends the extracted <em>text</em>. Use this for code or text-heavy content where the AI just needs to read it.</p>
+      <div class="callout">
+        <strong>Cursor stays out of the way</strong>
+        While you're dragging the selection, the system cursor is hidden and Aura's selection overlay is excluded from capture. The interviewer sees zero cursor motion across the whole Snap / OCR round-trip.
+      </div>
+    </section>
+
+    <!-- 10. Project -->
+    <section id="project">
+      <h2>10. Load project for context</h2>
+      <p>If the interview is around a take-home or a system you should know, load a local folder so the AI has the codebase context.</p>
+      <ol class="steps">
+        <li>Click <strong>Project</strong> in the action bar.</li>
+        <li>Browse to the project root, or paste the path. Aura analyses the structure and shows a tree on the left, a code editor on the right.</li>
+        <li>Click <strong>Send whole project</strong> to push a project summary + your Explain prompt to the AI.</li>
+        <li>Click any file in the tree to open it on the right. Click <strong>Send selected file</strong> to send just that file's content.</li>
+      </ol>
+      <p>The <em>Explain prompt</em> (Settings → PROJECT) controls how the AI is asked to explain the project. Default asks for a structured overview + likely interview topics.</p>
+    </section>
+
+    <!-- 11. Stealth -->
+    <section id="stealth">
+      <h2>11. Stealth mode</h2>
+      <p>Aura's main window is <strong>excluded from screen capture</strong> via Win32's <code>WDA_EXCLUDEFROMCAPTURE</code>. Zoom, Teams, Meet, OBS, Loom, and most recording software see straight through it — they record whatever's behind Aura, not Aura itself.</p>
+      <p>Toggle with the <strong>eye icon</strong> in the titlebar or <kbd>Alt</kbd>+<kbd>E</kbd>:</p>
+      <ul>
+        <li><strong>Stealth ON</strong> — the eye icon glows green. The window is invisible to capture. The cursor cloak is active (see Pin cursor below).</li>
+        <li><strong>Stealth OFF</strong> — the eye icon is dim. The window is normally visible. Use this for demos or troubleshooting.</li>
+      </ul>
+      <div class="callout warn">
+        <strong>Test before the real interview</strong>
+        Open OBS or hold a test Zoom call on a second device. Aura's window should not appear in the screen share. If it does, your Windows build may be too old (WDA_EXCLUDEFROMCAPTURE requires Windows 10 build 2004 or later).
+      </div>
+    </section>
+
+    <!-- 12. Pin cursor -->
+    <section id="pin-cursor">
+      <h2>12. Pin cursor</h2>
+      <p>Even with stealth ON, the OS cursor itself is drawn by the Windows compositor at a layer above stealth — meaning the screen-share viewer can still see your mouse moving. The Pin cursor feature solves that.</p>
+      <h3>How it works</h3>
+      <ul>
+        <li><strong>Stealth ON, no pin</strong> — your real cursor is hidden system-wide. A decoy arrow follows the mouse for the viewer to see. Shape never changes — no I-beam, no hand, no resize.</li>
+        <li><strong>Pin clicked</strong> — the decoy <em>freezes</em> at the click position. A second arrow (visible only to you, hidden from capture) tracks your real mouse so you can still navigate.</li>
+        <li><strong>Unpin</strong> — the decoy resumes following the mouse, your follower disappears, the OS cursor snaps back to the pin position before showing again. No visible teleport for the viewer.</li>
+      </ul>
+      <p>Pin via the titlebar pin icon, the action bar <strong>Pin cursor</strong> button, or <kbd>Alt</kbd>+<kbd>C</kbd>.</p>
+      <p>Auto-pinning kicks in for <strong>Snap, OCR, Project, and folder browse</strong> — the viewer sees a stationary cursor for the entire operation.</p>
+    </section>
+
+    <!-- 13. Opacity -->
+    <section id="opacity">
+      <h2>13. Opacity &amp; appearance</h2>
+      <p>The titlebar slider sets window opacity. Range is 20 % to 100 % — useful when you want Aura semi-transparent so you can read text behind it.</p>
+      <ul>
+        <li>Click anywhere on the slider track to jump to that opacity directly.</li>
+        <li>If you accidentally drag too low and can't find the controls, press <kbd>Alt</kbd>+<kbd>0</kbd> to snap back to 100 %.</li>
+        <li>The colour swatch next to the slider opens a colour picker. Pick a tint and Aura derives a 5-shade family for the whole UI.</li>
+      </ul>
+    </section>
+
+    <!-- 14. Hotkeys -->
+    <section id="hotkeys">
+      <h2>14. Hotkeys</h2>
+      <p>All defaults use <kbd>Alt</kbd> + a single mnemonic letter for fast one-handed use. Customise any of them in <strong>Settings → HOTKEYS</strong>.</p>
+      <table class="hotkeys">
+        <tr><th>Action</th><th class="key">Default</th></tr>
+        <tr><td>Send the latest caption tail to the AI</td><td class="key"><kbd>Alt</kbd>+<kbd>A</kbd></td></tr>
+        <tr><td>Drag a rectangle to <strong>Snap</strong> + send</td><td class="key"><kbd>Alt</kbd>+<kbd>S</kbd></td></tr>
+        <tr><td>Drag a rectangle to <strong>OCR</strong> + send text</td><td class="key"><kbd>Alt</kbd>+<kbd>O</kbd></td></tr>
+        <tr><td>Open the <strong>Project</strong> panel</td><td class="key"><kbd>Alt</kbd>+<kbd>P</kbd></td></tr>
+        <tr><td><strong>Show / Hide</strong> Aura</td><td class="key"><kbd>Alt</kbd>+<kbd>H</kbd></td></tr>
+        <tr><td><strong>Pin on top</strong> (always-on-top toggle)</td><td class="key"><kbd>Alt</kbd>+<kbd>T</kbd></td></tr>
+        <tr><td><strong>Pin / Resume cursor</strong></td><td class="key"><kbd>Alt</kbd>+<kbd>C</kbd></td></tr>
+        <tr><td><strong>Toggle stealth</strong></td><td class="key"><kbd>Alt</kbd>+<kbd>E</kbd></td></tr>
+        <tr><td><strong>Reset opacity</strong> to 100 %</td><td class="key"><kbd>Alt</kbd>+<kbd>0</kbd></td></tr>
+      </table>
+      <p>Hotkeys register <em>globally</em> via <code>RegisterHotKey</code> — they work even when Aura isn't the foreground app.</p>
+    </section>
+
+    <!-- 15. Tray menu -->
+    <section id="tray">
+      <h2>15. Tray menu</h2>
+      <p>Right-click Aura's tray icon for quick actions without showing the main window:</p>
+      <ul>
+        <li><strong>Show App</strong> — bring Aura's window back if it was hidden.</li>
+        <li><strong>Toggle Stealth</strong> — same as the eye icon.</li>
+        <li><strong>Profile ▸</strong> — switch the active mode. Modes with 2 + resumes expand into a sub-menu so you can pick the exact resume in one click.</li>
+        <li><strong>Settings</strong> — opens the Settings dialog.</li>
+        <li><strong>Exit</strong> — fully quits Aura (restores the system cursor first).</li>
+      </ul>
+      <p>Single left-click on the tray icon toggles the main window's visibility.</p>
+    </section>
+
+    <!-- 16. Privacy -->
+    <section id="privacy">
+      <h2>16. Privacy &amp; license</h2>
+      <h3>What stays local</h3>
+      <ul>
+        <li>Your resume PDFs, extracted text, mode prompts, notes — all in <code>%APPDATA%\Aura\settings.json</code>.</li>
+        <li>License file in <code>%LOCALAPPDATA%\Aura\license.lic</code>.</li>
+        <li>Recordings (if you use the Record button) save to the folder configured in Settings → RECORDING.</li>
+      </ul>
+      <h3>What leaves your machine</h3>
+      <ul>
+        <li>Whatever you explicitly send to your chosen AI (resumes, prompts, captions, snaps) — under that AI service's own ToS.</li>
+        <li>No telemetry. No analytics. Aura does not phone home.</li>
+      </ul>
+      <h3>License</h3>
+      <p>Your activation key is hardware-bound (CPU + disk + BIOS fingerprint). On reinstall on the SAME machine, the saved <code>.lic</code> file is reused automatically. Moving to a new PC uses a new activation slot.</p>
+    </section>
+
+    <!-- 17. Troubleshooting -->
+    <section id="troubleshoot">
+      <h2>17. Troubleshooting</h2>
+
+      <h3>"Aura is still visible on my screen share"</h3>
+      <ul>
+        <li>Check that stealth is ON (eye icon glows green, or <kbd>Alt</kbd>+<kbd>E</kbd>).</li>
+        <li>Some older screen-recorders use legacy capture APIs that bypass WDA_EXCLUDEFROMCAPTURE. Update them. Modern Zoom / Teams / Meet / OBS all respect it.</li>
+        <li>Your Windows build must be 10.0.19041 (2004) or later.</li>
+      </ul>
+
+      <h3>"The Answer hotkey does nothing"</h3>
+      <ul>
+        <li>Another app is holding the same key — open Settings → HOTKEYS and pick a different combo.</li>
+        <li>You haven't clicked <strong>Start meeting</strong> yet. Until you do, action buttons are disabled and the hotkey is a no-op.</li>
+        <li>License expired — the eye-icon glow turns accent-purple when activation is required.</li>
+      </ul>
+
+      <h3>"WebView2 / AI tab is blank"</h3>
+      <ul>
+        <li>Reinstall Aura — the installer pulls in the Microsoft Edge WebView2 runtime if it's missing.</li>
+        <li>Click <strong>Settings → AI &amp; CAPTIONS</strong> and re-pick the AI service to force a navigation.</li>
+        <li>Open Aura with <code>--dev</code> for the dev URL bar to diagnose.</li>
+      </ul>
+
+      <h3>"Captions aren't appearing"</h3>
+      <ul>
+        <li>Aura uses Windows 11 Live Captions under the hood. Enable Windows Live Captions once (Settings → Accessibility → Captions) — Aura piggybacks on its UI Automation tree.</li>
+        <li>Make sure the meeting audio is actually playing through a system device that Live Captions can hear (default render endpoint).</li>
+      </ul>
+
+      <h3>"My cursor stays invisible after Aura crashes"</h3>
+      <ul>
+        <li>Sign out and back in (or restart Explorer). Aura restores the cursor on a clean exit, but a hard crash skips that step.</li>
+      </ul>
+
+      <hr class="soft">
+      <p style="color: var(--text-dim); font-size: 13px; text-align: center; margin-top: 24px;">
+        Aura — version 1.1.0 · last updated 2026
+      </p>
+    </section>
+
+  </main>
+</div>
+
+<!-- TOC active-section highlighting -->
+<script>
+  const sections = document.querySelectorAll('main section');
+  const links = document.querySelectorAll('aside.toc a');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const id = e.target.id;
+      links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+    });
+  }, { rootMargin: '-40% 0% -55% 0%' });
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
