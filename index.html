@@ -279,6 +279,58 @@
   section { scroll-margin-top: 24px; }
   hr.soft { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
 
+  /* Figures (screenshots + diagrams). The image gets a rounded
+     border, subtle ring + drop shadow so it lifts off the dark
+     background; the caption sits below, dim and italic. If a
+     screenshot is missing the placeholder ::before shows up so the
+     author can spot empty slots at a glance. */
+  figure {
+    margin: 18px 0 24px;
+    padding: 0;
+  }
+  figure img,
+  figure svg {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg-panel);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+  }
+  /* Missing-image placeholder. The alt-text shows + a hint to the
+     author about what to drop in. Only fires when the <img>'s src
+     fails to load — local dev with the screenshots not yet taken. */
+  figure img {
+    color: var(--text-dim);
+    font-size: 12px;
+    font-family: 'Cascadia Mono', monospace;
+    min-height: 80px;
+    padding: 28px;
+    text-align: center;
+  }
+  figure figcaption {
+    color: var(--text-dim);
+    font-size: 12px;
+    text-align: center;
+    margin-top: 8px;
+    font-style: italic;
+  }
+  /* Side-by-side comparison (Stealth before / after etc.). Two
+     figures sit in a 2-col grid; each gets the same lift treatment.
+     Falls back to stacked on narrow screens. */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 18px 0 24px;
+  }
+  .compare figure { margin: 0; }
+  .compare figcaption strong { color: var(--accent); font-style: normal; }
+  @media (max-width: 700px) {
+    .compare { grid-template-columns: 1fr; }
+  }
+
   /* Download CTA — sits just under the lede. Gradient panel with
      a big primary button + version metadata. Replace the
      YOUR_USERNAME placeholder in the href with your actual
@@ -427,7 +479,7 @@
       <div class="info">
         <span class="version">v1.1.0</span>
         <h3>Get Aura for Windows</h3>
-        <p class="meta"><strong>Windows 10/11</strong> · 75 MB · one-click installer · hardware-bound license</p>
+        <p class="meta"><strong>Windows 11 only</strong> · 75 MB · one-click installer · hardware-bound license</p>
       </div>
       <div class="btn-row">
         <a class="btn" href="https://github.com/corestack-cs/aura-guide/releases/latest/download/AuraSetup-1.1.0.exe">
@@ -441,6 +493,10 @@
     <!-- 1. Install & activate -->
     <section id="install">
       <h2>1. Install &amp; activate</h2>
+      <figure>
+        <img src="images/01-license-dialog.png" alt="License activation dialog showing Step 1 Device Key + Step 2 License Key fields">
+        <figcaption>The activation dialog you'll see on first launch. Copy your <em>Device Key</em> from Step 1 and send it to the seller; paste the license key they return into Step 2.</figcaption>
+      </figure>
       <ol class="steps">
         <li>
           <strong>Run the installer.</strong>
@@ -448,7 +504,7 @@
         </li>
         <li>
           <strong>WebView2 runtime check.</strong>
-          The installer verifies Microsoft Edge WebView2 Runtime is present (it usually ships with Windows 10/11). If it's missing, the installer opens the official download page.
+          The installer verifies Microsoft Edge WebView2 Runtime is present (it ships with Windows 11). If it's missing, the installer opens the official download page.
         </li>
         <li>
           <strong>Launch Aura.</strong>
@@ -468,6 +524,10 @@
     <!-- 2. First launch -->
     <section id="first-launch">
       <h2>2. First launch</h2>
+      <figure>
+        <img src="images/02-main-window.png" alt="Aura's main window — titlebar with opacity slider, caption pane, action bar, WebView2 AI tab">
+        <figcaption>Aura's main window. Top: titlebar with controls. Middle-top: live caption pane. Middle: action bar (Start meeting · Project · Snap · OCR · Pin cursor · Record · Answer). Bottom: the AI tab.</figcaption>
+      </figure>
       <p>After activation Aura opens its main window centred on your primary monitor. You'll see four areas:</p>
       <div class="grid">
         <div class="card">
@@ -513,6 +573,10 @@
     <!-- 4. Resumes -->
     <section id="resume">
       <h2>4. Upload your resume(s)</h2>
+      <figure>
+        <img src="images/04-manage-modes.png" alt="Manage Modes dialog showing the Resumes section with multiple PDFs and an Active badge on one">
+        <figcaption>Manage Modes dialog. Upload as many resumes as you want; the one with the <em>Active</em> badge gets injected into the AI session at Start meeting.</figcaption>
+      </figure>
       <p>Aura supports <strong>multiple resumes per mode</strong> — useful when you have stack-specific versions (e.g. one MERN-focused, one ASP.NET-focused). Only the resume you mark <em>Active</em> is sent to the AI when you start the meeting.</p>
       <ol class="steps">
         <li>Inside the Manage Modes dialog, click <strong>+ Add resume</strong> in the Resumes section.</li>
@@ -618,6 +682,38 @@
     <section id="stealth">
       <h2>11. Stealth mode</h2>
       <p>Aura's main window is <strong>excluded from screen capture</strong> via Win32's <code>WDA_EXCLUDEFROMCAPTURE</code>. Zoom, Teams, Meet, OBS, Loom, and most recording software see straight through it — they record whatever's behind Aura, not Aura itself.</p>
+
+      <div class="compare">
+        <figure>
+          <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+            <rect width="320" height="200" fill="#1a1a26"/>
+            <text x="14" y="22" fill="#7878A0" font-family="sans-serif" font-size="11" font-weight="700" letter-spacing="1">YOUR SCREEN</text>
+            <!-- Your IDE / desktop background -->
+            <rect x="14" y="34" width="292" height="148" rx="6" fill="#0F1419" stroke="#2A2A3A"/>
+            <text x="160" y="78" fill="#7878A0" font-family="monospace" font-size="10" text-anchor="middle">your IDE / browser</text>
+            <!-- Aura window overlaid -->
+            <rect x="60" y="56" width="200" height="120" rx="8" fill="#13131C" stroke="#8B6DFF" stroke-width="1.5"/>
+            <rect x="60" y="56" width="200" height="22" rx="8" fill="#1A1A26"/>
+            <circle cx="74" cy="67" r="3" fill="#8B6DFF"/>
+            <text x="85" y="71" fill="#F0F0F8" font-family="sans-serif" font-size="10" font-weight="600">Aura</text>
+            <text x="160" y="125" fill="#8B6DFF" font-family="sans-serif" font-size="10" text-anchor="middle">AI answer streaming…</text>
+            <text x="160" y="155" fill="#7878A0" font-family="sans-serif" font-size="9" text-anchor="middle">(visible to you)</text>
+          </svg>
+          <figcaption><strong>You see</strong> — Aura is right there, fully visible</figcaption>
+        </figure>
+        <figure>
+          <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+            <rect width="320" height="200" fill="#1a1a26"/>
+            <text x="14" y="22" fill="#7878A0" font-family="sans-serif" font-size="11" font-weight="700" letter-spacing="1">INTERVIEWER (ZOOM / TEAMS)</text>
+            <!-- Same IDE background -->
+            <rect x="14" y="34" width="292" height="148" rx="6" fill="#0F1419" stroke="#2A2A3A"/>
+            <text x="160" y="78" fill="#7878A0" font-family="monospace" font-size="10" text-anchor="middle">your IDE / browser</text>
+            <text x="160" y="106" fill="#7CFFAA" font-family="sans-serif" font-size="13" text-anchor="middle" font-weight="700">✓ Aura is invisible</text>
+            <text x="160" y="130" fill="#7878A0" font-family="sans-serif" font-size="10" text-anchor="middle">they only see the desktop behind it</text>
+          </svg>
+          <figcaption><strong>They see</strong> — your normal screen, no Aura</figcaption>
+        </figure>
+      </div>
       <p>Toggle with the <strong>eye icon</strong> in the titlebar or <kbd>Alt</kbd>+<kbd>E</kbd>:</p>
       <ul>
         <li><strong>Stealth ON</strong> — the eye icon glows green. The window is invisible to capture. The cursor cloak is active (see Pin cursor below).</li>
@@ -625,7 +721,7 @@
       </ul>
       <div class="callout warn">
         <strong>Test before the real interview</strong>
-        Open OBS or hold a test Zoom call on a second device. Aura's window should not appear in the screen share. If it does, your Windows build may be too old (WDA_EXCLUDEFROMCAPTURE requires Windows 10 build 2004 or later).
+        Open OBS or hold a test Zoom call on a second device. Aura's window should not appear in the screen share. Aura is supported on <strong>Windows 11 only</strong> — older Windows versions are not tested and stealth may not behave reliably.
       </div>
     </section>
 
@@ -633,6 +729,44 @@
     <section id="pin-cursor">
       <h2>12. Pin cursor</h2>
       <p>Even with stealth ON, the OS cursor itself is drawn by the Windows compositor at a layer above stealth — meaning the screen-share viewer can still see your mouse moving. The Pin cursor feature solves that.</p>
+
+      <div class="compare">
+        <figure>
+          <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+            <rect width="320" height="200" fill="#13131C"/>
+            <text x="14" y="22" fill="#7878A0" font-family="sans-serif" font-size="11" font-weight="700" letter-spacing="1">VIEWER (SCREEN SHARE)</text>
+            <!-- Cursor frozen at one position -->
+            <g transform="translate(140 90)">
+              <path d="M 0,0 L 0,18 L 5,14 L 8,21 L 11,20 L 7,12 L 14,12 Z" fill="white" stroke="#000" stroke-width="0.8"/>
+            </g>
+            <!-- Time indicators showing it doesn't move -->
+            <text x="160" y="155" fill="#8B6DFF" font-family="sans-serif" font-size="11" text-anchor="middle">⏸ Frozen at pin point</text>
+            <text x="160" y="172" fill="#7878A0" font-family="sans-serif" font-size="10" text-anchor="middle">— interviewer thinks you paused</text>
+          </svg>
+          <figcaption><strong>What the viewer sees</strong></figcaption>
+        </figure>
+        <figure>
+          <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+            <rect width="320" height="200" fill="#13131C"/>
+            <text x="14" y="22" fill="#7878A0" font-family="sans-serif" font-size="11" font-weight="700" letter-spacing="1">YOU (LOCAL)</text>
+            <!-- Static decoy at pin point -->
+            <g transform="translate(80 60)" opacity="0.65">
+              <path d="M 0,0 L 0,18 L 5,14 L 8,21 L 11,20 L 7,12 L 14,12 Z" fill="white" stroke="#000" stroke-width="0.8"/>
+              <text x="20" y="14" fill="#7878A0" font-family="sans-serif" font-size="9">decoy</text>
+            </g>
+            <!-- Live follower at mouse -->
+            <g transform="translate(220 130)">
+              <path d="M 0,0 L 0,18 L 5,14 L 8,21 L 11,20 L 7,12 L 14,12 Z" fill="white" stroke="#000" stroke-width="0.8"/>
+              <text x="20" y="14" fill="#8B6DFF" font-family="sans-serif" font-size="9" font-weight="700">live</text>
+            </g>
+            <!-- Movement arrow from decoy to live -->
+            <path d="M 110 80 Q 170 100 215 130" stroke="#8B6DFF" stroke-width="1.5" stroke-dasharray="3 3" fill="none" opacity="0.6"/>
+            <text x="160" y="175" fill="#8B6DFF" font-family="sans-serif" font-size="11" text-anchor="middle">✓ You can still navigate</text>
+          </svg>
+          <figcaption><strong>What you see</strong></figcaption>
+        </figure>
+      </div>
+      <p style="text-align: center; color: var(--text-dim); font-size: 13px; margin-top: -10px;">Same screen, two perspectives. The viewer sees a stationary cursor; you see a follower that tracks your real mouse so navigation still works.</p>
       <h3>How it works</h3>
       <ul>
         <li><strong>Stealth ON, no pin</strong> — your real cursor is hidden system-wide. A decoy arrow follows the mouse for the viewer to see. Shape never changes — no I-beam, no hand, no resize.</li>
@@ -657,6 +791,10 @@
     <!-- 14. Hotkeys -->
     <section id="hotkeys">
       <h2>14. Hotkeys</h2>
+      <figure>
+        <img src="images/14-hotkeys-settings.png" alt="Settings dialog HOTKEYS section showing each action paired with its current Alt+letter combo">
+        <figcaption>Settings → HOTKEYS. Click a field and press your combo to rebind.</figcaption>
+      </figure>
       <p>All defaults use <kbd>Alt</kbd> + a single mnemonic letter for fast one-handed use. Customise any of them in <strong>Settings → HOTKEYS</strong>.</p>
       <table class="hotkeys">
         <tr><th>Action</th><th class="key">Default</th></tr>
@@ -676,6 +814,10 @@
     <!-- 15. Tray menu -->
     <section id="tray">
       <h2>15. Tray menu</h2>
+      <figure>
+        <img src="images/15-tray-menu.png" alt="Tray right-click menu expanded showing Profile submenu with multiple resumes nested under one profile">
+        <figcaption>Right-click the tray icon. Profiles with 2 + resumes expand into a submenu so you can pick the exact resume in one click.</figcaption>
+      </figure>
       <p>Right-click Aura's tray icon for quick actions without showing the main window:</p>
       <ul>
         <li><strong>Show App</strong> — bring Aura's window back if it was hidden.</li>
@@ -713,7 +855,7 @@
       <ul>
         <li>Check that stealth is ON (eye icon glows green, or <kbd>Alt</kbd>+<kbd>E</kbd>).</li>
         <li>Some older screen-recorders use legacy capture APIs that bypass WDA_EXCLUDEFROMCAPTURE. Update them. Modern Zoom / Teams / Meet / OBS all respect it.</li>
-        <li>Your Windows build must be 10.0.19041 (2004) or later.</li>
+        <li>Aura is supported on Windows 11 only — older Windows versions are not tested.</li>
       </ul>
 
       <h3>"The Answer hotkey does nothing"</h3>
