@@ -506,6 +506,90 @@
     line-height: 1.6;
   }
 
+  /* ── Tier comparison grid (5 plans) ───────────────────────── */
+  .tier-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin: 26px 0 4px;
+  }
+  .tier {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 12px 16px;
+    text-align: center;
+    position: relative;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .tier:hover {
+    border-color: rgba(139, 109, 255, 0.45);
+    transform: translateY(-2px);
+  }
+  .tier .tier-name {
+    color: var(--text-dim);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .tier .tier-price {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+    line-height: 1;
+  }
+  .tier .tier-price .currency {
+    font-size: 14px;
+    vertical-align: top;
+    color: var(--text-second);
+    font-weight: 600;
+    margin-right: 2px;
+  }
+  .tier .tier-unit {
+    color: var(--text-second);
+    font-size: 12px;
+    margin-top: 6px;
+    min-height: 16px;
+  }
+  .tier .tier-save {
+    margin-top: 6px;
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .tier.featured {
+    border-color: var(--accent);
+    background: linear-gradient(180deg, rgba(139, 109, 255, 0.14), rgba(139, 109, 255, 0.04));
+    box-shadow: 0 8px 24px rgba(139, 109, 255, 0.18);
+  }
+  .tier.featured .tier-name { color: var(--accent); }
+  .tier .badge {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: #fff;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  @media (max-width: 760px) {
+    .tier-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .tier.featured {
+      grid-column: span 2;
+    }
+  }
+
+
   @media (max-width: 700px) {
     .download-cta {
       grid-template-columns: 1fr;
@@ -597,30 +681,61 @@
       <div class="price">
         <span class="currency">$</span>15<span class="period"> / month</span>
       </div>
-      <p class="tagline">One licence, one device. Cancel any time.</p>
+      <p class="tagline">One licence, one device. Longer plans save up to&nbsp;44%.</p>
+
+      <div class="tier-grid">
+        <div class="tier">
+          <div class="tier-name">1 month</div>
+          <div class="tier-price"><span class="currency">$</span>15</div>
+          <div class="tier-unit">$15&nbsp;/&nbsp;month</div>
+          <div class="tier-save">&nbsp;</div>
+        </div>
+        <div class="tier">
+          <div class="tier-name">3 months</div>
+          <div class="tier-price"><span class="currency">$</span>39</div>
+          <div class="tier-unit">$13&nbsp;/&nbsp;month</div>
+          <div class="tier-save">Save 13%</div>
+        </div>
+        <div class="tier">
+          <div class="tier-name">6 months</div>
+          <div class="tier-price"><span class="currency">$</span>69</div>
+          <div class="tier-unit">$11.50&nbsp;/&nbsp;month</div>
+          <div class="tier-save">Save 23%</div>
+        </div>
+        <div class="tier featured">
+          <span class="badge">BEST VALUE</span>
+          <div class="tier-name">12 months</div>
+          <div class="tier-price"><span class="currency">$</span>100</div>
+          <div class="tier-unit">$8.33&nbsp;/&nbsp;month</div>
+          <div class="tier-save">Save 44%</div>
+        </div>
+        <div class="tier">
+          <div class="tier-name">Lifetime</div>
+          <div class="tier-price"><span class="currency">$</span>150</div>
+          <div class="tier-unit">one-time</div>
+          <div class="tier-save">Cheapest&nbsp;past&nbsp;1.5y</div>
+        </div>
+      </div>
 
       <ul class="included">
         <li>Full stealth + Pin cursor — invisible to Zoom, Teams, Meet, OBS</li>
         <li>All five AI tabs — ChatGPT · Claude · Gemini · Perplexity · Grok</li>
         <li>Multi-resume profiles, Snap, OCR, Project context, hotkeys</li>
         <li>Free updates while your licence is active</li>
-        <li>Personal support by email / Discord</li>
+        <li>Personal support on Discord</li>
       </ul>
 
       <div class="buy-row">
-        <a class="buy-btn" href="mailto:james.liu.vectorspace@gmail.com?subject=Aura%20licence%20purchase">
-          <span>Email to purchase</span>
-        </a>
-        <a class="buy-btn secondary" href="https://discord.gg/AUJ25tNTs">
-          <span>Discord</span>
+        <a class="buy-btn" href="https://discord.gg/AUJ25tNTs">
+          <span>Get your licence on Discord</span>
         </a>
       </div>
 
       <p class="fineprint">
-        Longer commitments (6 months / 12 months / lifetime) available
-        at a discount — ask on email or Discord. Licences are tied to
-        your device's hardware fingerprint and survive Windows
-        reinstall. Refund within 7 days, no questions asked.
+        Join the Discord, message us with the plan you want, and we'll
+        walk you through payment (PayPal, crypto, or bank transfer) and
+        issue your key. Licences bind to your device's hardware
+        fingerprint and survive a Windows reinstall.
       </p>
     </section>
 
