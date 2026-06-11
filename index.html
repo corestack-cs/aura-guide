@@ -645,7 +645,6 @@
     <a href="#hotkeys" class="feature">14. Hotkeys</a>
     <a href="#tray" class="feature">15. Tray menu</a>
     <a href="#privacy">16. Privacy &amp; license</a>
-    <a href="#troubleshoot">17. Troubleshooting</a>
   </aside>
 
   <!-- ─── Main content ────────────────────────────────── -->
@@ -1099,47 +1098,10 @@
       <p>Your activation key is hardware-bound (CPU + disk + BIOS fingerprint). On reinstall on the SAME machine, the saved <code>.lic</code> file is reused automatically. Moving to a new PC uses a new activation slot.</p>
     </section>
 
-    <!-- 17. Troubleshooting -->
-    <section id="troubleshoot">
-      <h2>17. Troubleshooting</h2>
-
-      <h3>"Aura is still visible on my screen share"</h3>
-      <ul>
-        <li>Check that stealth is ON (eye icon glows green, or <kbd>Alt</kbd>+<kbd>E</kbd>).</li>
-        <li>Some older screen-recorders use legacy capture APIs that bypass WDA_EXCLUDEFROMCAPTURE. Update them. Modern Zoom / Teams / Meet / OBS all respect it.</li>
-        <li>Aura is supported on Windows 11 only — older Windows versions are not tested.</li>
-      </ul>
-
-      <h3>"The Answer hotkey does nothing"</h3>
-      <ul>
-        <li>Another app is holding the same key — open Settings → HOTKEYS and pick a different combo.</li>
-        <li>You haven't clicked <strong>Start meeting</strong> yet. Until you do, action buttons are disabled and the hotkey is a no-op.</li>
-        <li>License expired — the eye-icon glow turns accent-purple when activation is required.</li>
-      </ul>
-
-      <h3>"WebView2 / AI tab is blank"</h3>
-      <ul>
-        <li>Reinstall Aura — the installer pulls in the Microsoft Edge WebView2 runtime if it's missing.</li>
-        <li>Click <strong>Settings → AI &amp; CAPTIONS</strong> and re-pick the AI service to force a navigation.</li>
-        <li>Open Aura with <code>--dev</code> for the dev URL bar to diagnose.</li>
-      </ul>
-
-      <h3>"Captions aren't appearing"</h3>
-      <ul>
-        <li>Aura uses Windows 11 Live Captions under the hood. Enable Windows Live Captions once (Settings → Accessibility → Captions) — Aura piggybacks on its UI Automation tree.</li>
-        <li>Make sure the meeting audio is actually playing through a system device that Live Captions can hear (default render endpoint).</li>
-      </ul>
-
-      <h3>"My cursor stays invisible after Aura crashes"</h3>
-      <ul>
-        <li>Sign out and back in (or restart Explorer). Aura restores the cursor on a clean exit, but a hard crash skips that step.</li>
-      </ul>
-
-      <hr class="soft">
-      <p style="color: var(--text-dim); font-size: 13px; text-align: center; margin-top: 24px;">
-        Aura — version 1.1.2 · last updated 2026
-      </p>
-    </section>
+    <hr class="soft">
+    <p style="color: var(--text-dim); font-size: 13px; text-align: center; margin-top: 24px;">
+      Aura — version 1.1.2 · last updated 2026
+    </p>
 
   </main>
 </div>
