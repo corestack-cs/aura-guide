@@ -385,23 +385,46 @@
   .download-cta .btn {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    padding: 14px 26px;
-    background: var(--accent);
+    justify-content: center;
+    gap: 14px;
+    padding: 22px 44px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-dim));
     color: #fff;
     text-decoration: none;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 15px;
-    transition: all 0.15s ease;
-    box-shadow: 0 4px 18px rgba(139, 109, 255, 0.35);
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 19px;
+    letter-spacing: 0.3px;
+    transition: all 0.18s ease;
+    box-shadow:
+      0 10px 32px rgba(139, 109, 255, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+    white-space: nowrap;
+    min-width: 280px;
   }
   .download-cta .btn:hover {
-    background: #9C82FF;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 22px rgba(139, 109, 255, 0.5);
+    background: linear-gradient(135deg, #9C82FF, #7B5DEF);
+    transform: translateY(-2px) scale(1.015);
+    box-shadow:
+      0 14px 40px rgba(139, 109, 255, 0.6),
+      inset 0 1px 0 rgba(255, 255, 255, 0.22);
   }
-  .download-cta .btn .arrow { font-size: 16px; line-height: 1; }
+  .download-cta .btn:active {
+    transform: translateY(0) scale(0.99);
+  }
+  .download-cta .btn .arrow {
+    font-size: 22px;
+    line-height: 1;
+    /* Gentle vertical pulse so the button reads as an action,
+       not flat decoration. Slow enough to not feel jittery. */
+    animation: dlArrowBob 2.2s ease-in-out infinite;
+  }
+  @keyframes dlArrowBob {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(3px); }
+  }
   .download-cta .footnote {
     color: var(--text-dim);
     font-size: 11.5px;
