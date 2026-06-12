@@ -337,40 +337,48 @@
      GitHub username. The "/releases/latest/" path is a GitHub
      special — it always serves whatever the most recent release
      asset is, so the page doesn't need re-editing on each ship. -->
+  /* Vertical stack — left/right grid was hiding the button next to
+     the metadata. Centred column makes the button the focal point
+     so a first-time visitor cannot miss it. */
   .download-cta {
     margin: 0 0 48px;
-    padding: 28px 32px;
-    background: linear-gradient(135deg, rgba(139, 109, 255, 0.18), rgba(139, 109, 255, 0.04));
-    border: 1px solid rgba(139, 109, 255, 0.35);
-    border-radius: 14px;
-    display: grid;
-    grid-template-columns: 1fr auto;
+    padding: 36px 32px 32px;
+    background: linear-gradient(135deg, rgba(139, 109, 255, 0.22), rgba(139, 109, 255, 0.05));
+    border: 1px solid rgba(139, 109, 255, 0.45);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 24px;
-    box-shadow: 0 8px 32px rgba(139, 109, 255, 0.08);
+    text-align: center;
+    gap: 18px;
+    box-shadow: 0 12px 40px rgba(139, 109, 255, 0.12);
   }
-  .download-cta .info { min-width: 0; }
+  .download-cta .info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
   .download-cta .version {
     display: inline-block;
-    background: rgba(139, 109, 255, 0.25);
+    background: rgba(139, 109, 255, 0.28);
     color: var(--accent);
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.8px;
-    padding: 3px 9px;
+    padding: 3px 10px;
     border-radius: 5px;
-    margin-bottom: 8px;
   }
   .download-cta h3 {
-    margin: 0 0 4px;
-    font-size: 22px;
+    margin: 0;
+    font-size: 26px;
     color: var(--text-primary);
     font-weight: 700;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.3px;
   }
   .download-cta .meta {
     color: var(--text-second);
-    font-size: 13.5px;
+    font-size: 14px;
     margin: 0;
   }
   .download-cta .meta strong {
@@ -380,54 +388,72 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    align-items: flex-end;
+    align-items: center;
+    width: 100%;
   }
+  /* Big, hard-to-miss button. Full-width on container, generous
+     padding, animated glow ring that keeps drawing the eye even
+     when the page is static. Pulse is slow + low-amplitude so it
+     doesn't feel ad-like. */
   .download-cta .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 14px;
-    padding: 22px 44px;
+    gap: 16px;
+    padding: 26px 56px;
     background: linear-gradient(135deg, var(--accent), var(--accent-dim));
     color: #fff;
     text-decoration: none;
-    border-radius: 14px;
+    border-radius: 16px;
     font-weight: 700;
-    font-size: 19px;
+    font-size: 22px;
     letter-spacing: 0.3px;
-    transition: all 0.18s ease;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
     box-shadow:
-      0 10px 32px rgba(139, 109, 255, 0.45),
-      inset 0 1px 0 rgba(255, 255, 255, 0.18);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+      0 12px 40px rgba(139, 109, 255, 0.55),
+      inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
     white-space: nowrap;
-    min-width: 280px;
+    min-width: 360px;
+    animation: dlGlow 2.6s ease-in-out infinite;
   }
   .download-cta .btn:hover {
     background: linear-gradient(135deg, #9C82FF, #7B5DEF);
-    transform: translateY(-2px) scale(1.015);
+    transform: translateY(-2px) scale(1.02);
     box-shadow:
-      0 14px 40px rgba(139, 109, 255, 0.6),
-      inset 0 1px 0 rgba(255, 255, 255, 0.22);
+      0 18px 52px rgba(139, 109, 255, 0.7),
+      inset 0 1px 0 rgba(255, 255, 255, 0.28);
+    animation: none; /* hover overrides pulse so user feels in control */
   }
   .download-cta .btn:active {
     transform: translateY(0) scale(0.99);
   }
   .download-cta .btn .arrow {
-    font-size: 22px;
+    font-size: 26px;
     line-height: 1;
-    /* Gentle vertical pulse so the button reads as an action,
-       not flat decoration. Slow enough to not feel jittery. */
     animation: dlArrowBob 2.2s ease-in-out infinite;
   }
   @keyframes dlArrowBob {
     0%, 100% { transform: translateY(0); }
     50%      { transform: translateY(3px); }
   }
+  @keyframes dlGlow {
+    0%, 100% {
+      box-shadow:
+        0 12px 40px rgba(139, 109, 255, 0.55),
+        inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    }
+    50% {
+      box-shadow:
+        0 16px 56px rgba(139, 109, 255, 0.85),
+        0 0 0 6px rgba(139, 109, 255, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.28);
+    }
+  }
   .download-cta .footnote {
     color: var(--text-dim);
-    font-size: 11.5px;
+    font-size: 12px;
   }
   /* ── Pricing block (sits next to install CTA) ─────────────── */
   .pricing-card {
@@ -615,11 +641,19 @@
 
   @media (max-width: 700px) {
     .download-cta {
-      grid-template-columns: 1fr;
-      padding: 22px;
+      padding: 26px 20px 22px;
     }
-    .download-cta .btn-row { align-items: stretch; }
-    .download-cta .btn { justify-content: center; }
+    .download-cta h3 { font-size: 22px; }
+    .download-cta .btn {
+      /* Drop min-width so the button can shrink to fit narrow
+         phones without horizontal scroll; padding still reads as
+         a tap-target-sized hit zone. */
+      min-width: 0;
+      width: 100%;
+      padding: 22px 24px;
+      font-size: 18px;
+    }
+    .download-cta .btn .arrow { font-size: 22px; }
   }
 
   @media (max-width: 900px) {
@@ -684,14 +718,14 @@
          .exe via Releases instantly makes it the live download. -->
     <div class="download-cta">
       <div class="info">
-        <span class="version">v1.1.2</span>
+        <span class="version">v1.1.3</span>
         <h3>Get Aura for Windows</h3>
         <p class="meta"><strong>Windows 11 only</strong> · 102 MB · one-click installer · hardware-bound license</p>
       </div>
       <div class="btn-row">
-        <a class="btn" href="https://github.com/corestack-cs/aura-guide/releases/latest/download/AuraSetup-1.1.2.exe">
+        <a class="btn" href="https://github.com/corestack-cs/aura-guide/releases/latest/download/AuraSetup-1.1.3.exe">
           <span class="arrow">⬇</span>
-          <span>Download AuraSetup-1.1.2.exe</span>
+          <span>Download AuraSetup-1.1.3.exe</span>
         </a>
       </div>
     </div>
@@ -770,7 +804,7 @@
       <ol class="steps">
         <li>
           <strong>Run the installer.</strong>
-          Double-click <code>AuraSetup-1.1.2.exe</code>. The wizard auto-closes any running Aura instance, copies files to <code>C:\Program Files\Aura\</code>, and registers Start Menu / optional desktop shortcuts.
+          Double-click <code>AuraSetup-1.1.3.exe</code>. The wizard auto-closes any running Aura instance, copies files to <code>C:\Program Files\Aura\</code>, and registers Start Menu / optional desktop shortcuts.
         </li>
         <li>
           <strong>WebView2 runtime check.</strong>
@@ -1123,7 +1157,7 @@
 
     <hr class="soft">
     <p style="color: var(--text-dim); font-size: 13px; text-align: center; margin-top: 24px;">
-      Aura — version 1.1.2 · last updated 2026
+      Aura — version 1.1.3 · last updated 2026
     </p>
 
   </main>
