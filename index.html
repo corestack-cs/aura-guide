@@ -1115,8 +1115,16 @@
         <tr><td><strong>Pin / Resume cursor</strong></td><td class="key"><kbd>Alt</kbd>+<kbd>C</kbd></td></tr>
         <tr><td><strong>Toggle stealth</strong></td><td class="key"><kbd>Alt</kbd>+<kbd>E</kbd></td></tr>
         <tr><td><strong>Reset opacity</strong> to 100 %</td><td class="key"><kbd>Alt</kbd>+<kbd>0</kbd></td></tr>
+        <tr><td><strong>Move Aura left</strong> (60 px per press)</td><td class="key"><kbd>Alt</kbd>+<kbd>←</kbd></td></tr>
+        <tr><td><strong>Move Aura right</strong></td><td class="key"><kbd>Alt</kbd>+<kbd>→</kbd></td></tr>
+        <tr><td><strong>Move Aura up</strong></td><td class="key"><kbd>Alt</kbd>+<kbd>↑</kbd></td></tr>
+        <tr><td><strong>Move Aura down</strong></td><td class="key"><kbd>Alt</kbd>+<kbd>↓</kbd></td></tr>
       </table>
       <p>Hotkeys register <em>globally</em> via <code>RegisterHotKey</code> — they work even when Aura isn't the foreground app.</p>
+      <div class="callout">
+        <strong>Why arrow-key window move?</strong>
+        Dragging Aura's titlebar with the mouse during an interview forces the cursor to leave the browser viewport, which fires <code>pointerleave</code> on the proctored page — a signal interview-monitoring scripts watch for. <kbd>Alt</kbd>+<kbd>←</kbd>/<kbd>↑</kbd>/<kbd>→</kbd>/<kbd>↓</kbd> reposition Aura entirely from the keyboard, so the cursor stays exactly where it is. The window moves via <code>SetWindowPos</code> with <code>SWP_NOACTIVATE</code> — no focus shift, no <code>window.blur</code> event.
+      </div>
     </section>
 
     <!-- 15. Tray menu -->
