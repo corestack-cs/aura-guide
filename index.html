@@ -959,7 +959,11 @@
       <p>The reply streams back into the AI tab. Read it off the right pane while you talk.</p>
       <div class="callout">
         <strong>Faster than a click</strong>
-        Once you're comfortable, leave Aura behind another window and press <kbd>Alt</kbd>+<kbd>A</kbd> by feel. The hotkey works system-wide regardless of focus.
+        Once you're comfortable, leave Aura behind another window and press <kbd>Alt</kbd>+<kbd>A</kbd> by feel. The hotkey works while Aura's window is open, regardless of which app is in front.
+      </div>
+      <div class="callout">
+        <strong>Want to type into the AI yourself?</strong>
+        During a meeting Aura runs in click-stealth mode (it never steals focus from the interview tab), which also means a click in the AI pane won't land your keystrokes there. Toggle the <strong>Type</strong> button (next to Answer) <em>on</em> to drop stealth so you can click into the chat box and type a follow-up by hand; toggle it <em>off</em> to go invisible again. It resets to off automatically whenever you start or stop a meeting.
       </div>
     </section>
 
@@ -1124,7 +1128,11 @@
         <tr><td><strong>Move Aura up</strong></td><td class="key"><kbd>Alt</kbd>+<kbd>↑</kbd></td></tr>
         <tr><td><strong>Move Aura down</strong></td><td class="key"><kbd>Alt</kbd>+<kbd>↓</kbd></td></tr>
       </table>
-      <p>Hotkeys register <em>globally</em> via <code>RegisterHotKey</code> — they work even when Aura isn't the foreground app.</p>
+      <p>Hotkeys register <em>globally</em> via <code>RegisterHotKey</code>, so they fire even when Aura isn't the foreground app — <strong>as long as Aura's window is shown</strong>. Hiding Aura to the tray (the <kbd>Alt</kbd>+<kbd>H</kbd> hotkey or the window's close button) releases every global hotkey, so it stops intercepting your keys the moment it's out of sight. Bring the window back to re-arm them.</p>
+      <div class="callout">
+        <strong>Bringing Aura back once it's hidden</strong>
+        Because hiding releases the hotkeys, <kbd>Alt</kbd>+<kbd>H</kbd> can hide Aura but can't summon it back. To restore the window, <strong>left-click the tray icon</strong> (or right-click → <strong>Show App</strong>). The hotkeys re-register the instant the window reappears. You can also turn all hotkeys off (and back on) at will from the tray's <strong>Hotkeys</strong> item — handy when you want to type normally without Aura grabbing <kbd>Alt</kbd>+<kbd>A</kbd>.
+      </div>
       <div class="callout">
         <strong>Why arrow-key window move?</strong>
         Dragging Aura's titlebar with the mouse during an interview forces the cursor to leave the browser viewport, which fires <code>pointerleave</code> on the proctored page — a signal interview-monitoring scripts watch for. <kbd>Alt</kbd>+<kbd>←</kbd>/<kbd>↑</kbd>/<kbd>→</kbd>/<kbd>↓</kbd> reposition Aura entirely from the keyboard, so the cursor stays exactly where it is. The window moves via <code>SetWindowPos</code> with <code>SWP_NOACTIVATE</code> — no focus shift, no <code>window.blur</code> event.
@@ -1140,8 +1148,9 @@
       </figure>
       <p>Right-click Aura's tray icon for quick actions without showing the main window:</p>
       <ul>
-        <li><strong>Show App</strong> — bring Aura's window back if it was hidden.</li>
+        <li><strong>Show App</strong> — bring Aura's window back if it was hidden (also re-arms the global hotkeys).</li>
         <li><strong>Toggle Stealth</strong> — same as the eye icon.</li>
+        <li><strong>Hotkeys</strong> — a checkable master switch for all global hotkeys. Untick it to silence <kbd>Alt</kbd>+<kbd>A</kbd> and friends without hiding or exiting Aura; tick it again to restore them. (Hotkeys are off automatically whenever the window is hidden, regardless of this switch.)</li>
         <li><strong>Profile ▸</strong> — switch the active mode. Modes with 2 + resumes expand into a sub-menu so you can pick the exact resume in one click.</li>
         <li><strong>Settings</strong> — opens the Settings dialog.</li>
         <li><strong>Exit</strong> — fully quits Aura (restores the system cursor first).</li>
